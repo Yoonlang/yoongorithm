@@ -31,26 +31,28 @@ public class Q2 {
             musics[i] = stoi(st.nextToken());
         }
 
-        int[][] dp = new int[n+1][m+1];
-        for (int i = 0; i < n+1; i++) {
-            Arrays.fill(dp[i], -1);
-        }
-        dp[0][s] = s;
+        boolean[][] dp = new boolean[n+1][m+1];
+
+        dp[0][s] = true;
+
+
         for (int i = 1; i < n+1; i++) {
             for (int j = 0; j < m+1; j++) {
-                if (j - musics[i] >= 0 && j + musics[i] <= m && dp[i-1][j-musics[i]] != -1 && dp[i-1][j+musics[i]] != -1) {
-                    dp[i][j] = Math.max(dp[i-1][j-musics[i]] + musics[i], dp[i-1][j+musics[i]] - musics[i]);
-                } else if (j - musics[i] >= 0 && dp[i-1][j-musics[i]] != -1) {
-                    dp[i][j] = dp[i-1][j-musics[i]] + musics[i];
-                } else if (j + musics[i] <= m && dp[i-1][j+musics[i]] != -1) {
-                    dp[i][j] = dp[i-1][j+musics[i]] - musics[i];
+
+                if (j + musics[i] <= m && dp[i-1][j + musics[i]]) {
+                    dp[i][j] =true지;
+                }
+
+                if (j - musics[i] >= 0 && dp[i-1][j - musics[i]]) {
+                    dp[i][j] =true;
                 }
             }
         }
 
+
         for (int i = m; i >= 0; i--) {
-            if (dp[n][i] != -1) {
-                System.out.println(dp[n][i]);
+            if (dp[n][i]) {
+                System.out.println(i);
                 return;
             }
         }

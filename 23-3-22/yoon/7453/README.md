@@ -57,3 +57,17 @@ a, b, c, d를 일반 벡터로 받고
 
 40%쯤에서 틀렸습니다인데, 사실 오히려 희소식인듯.
 long long 처리 해주.
+
+---
+
+정답 맞추고 나서 hash map으로 한번 뚫어보자.
+
+1차 시도. custom hash 추가.
+
+하지만 unordered_map으론 여전히 시간초과.
+
+https://codeforces.com/blog/entry/60737
+
+gp_hash_table을 통해 처리해보자.
+
+gp_hash_table 통해서 속도 향상 + custom_hash로 중복값 배제하니까 AC.

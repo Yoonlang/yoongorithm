@@ -1,2 +1,6 @@
 /out
 /.idea
+.vscode
+
+# CJ's preference for cpp out file name
+a

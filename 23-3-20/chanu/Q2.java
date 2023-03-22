@@ -40,7 +40,7 @@ public class Q2 {
             for (int j = 0; j < m+1; j++) {
 
                 if (j + musics[i] <= m && dp[i-1][j + musics[i]]) {
-                    dp[i][j] =true지;
+                    dp[i][j] =true;
                 }
 
                 if (j - musics[i] >= 0 && dp[i-1][j - musics[i]]) {

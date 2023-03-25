@@ -1,5 +1,6 @@
 /out
 /.idea
+/**/a.out
 .vscode
 
 # CJ's preference for cpp out file name

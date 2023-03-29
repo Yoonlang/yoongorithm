@@ -12,6 +12,14 @@ import java.util.StringTokenizer;
 240
 
  */
+
+/**
+ * 추가 수정 내용
+ * ```java
+ * dp[k][i] = max(dp[k-1][i-m] + 현재 칸 사람수 , dp[k-1][i-1])
+ * ```
+ * 해당 식으로 푸는게 더 낫습니다
+ */
 public class Q4 {
 
     static int TRUE = 1;

@@ -40,3 +40,14 @@ dp[k][i][true] = max(dp[k][i-1][true], dp[k][i-1][false])
 
 위의 dp 배열을 iterative하게 채우고 
 max(dp[3][n-m+1][true], dp[3][n-m+1][false])를 해주면 끝
+
+
+---
+
+수정
+
+DP식 수정을 해도 될 듯하다
+
+```java
+dp[k][i] = max(dp[k-1][i-m] + 현재 칸 사람수 , dp[k-1][i-1])
+```

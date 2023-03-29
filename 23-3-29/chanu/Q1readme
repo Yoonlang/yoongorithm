@@ -1,0 +1,6 @@
+### 2670번 풀이
+
+배열을 쭉 훓으면서 max result 찾기
+
+if result*arr[i] <arr[i]
+   result = arr[i]로 초기화한다

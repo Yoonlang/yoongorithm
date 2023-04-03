@@ -145,18 +145,29 @@ pi getBucketIdx(vector<vector<pi>> &buckets, int node) {
     return {i, j};
 }
 
-void updateSeg(bool value, int l, int r, int root, int s, int e) {
+void lazyUpdate(int root, int s, int e) {
+    seg[root * 2].first += seg[root].first;
+    seg[root * 2].second += seg[root].second;
+    seg[root * 2 + 1].first += seg[root].first;
+    seg[root * 2 + 1].second += seg[root].second;
+    seg[root] = {0, 0};
+}
+
+pi updateSeg(pi value, int l, int r, int root, int s, int e) {
     if (r < s || l > e)
-        return;
+        return {0, 0};
     if (l <= s && e <= r) {
-        seg[root].first += value ? -1 : 1;
-        seg[root].second += value ? 1 : -1;
-        return;
+        seg[root].first += value.first;
+        seg[root].second += value.second;
+        return seg[root];
     }
 
+    lazyUpdate(root, s, e);
+
     int m = (s + e) / 2;
-    updateSeg(value, l, r, root * 2, s, m);
-    updateSeg(value, l, r, root * 2 + 1, m + 1, e);
+    auto left = updateSeg(value, l, r, root * 2, s, m);
+    auto right = updateSeg(value, l, r, root * 2 + 1, m + 1, e);
+    return {left.first + right.first, left.second + right.second};
 }
 
 pi find(int target, int root, int s, int e) {
@@ -165,11 +176,7 @@ pi find(int target, int root, int s, int e) {
     if (target == s && target == e)
         return seg[root];
 
-    seg[root * 2].first += seg[root].first;
-    seg[root * 2].second += seg[root].second;
-    seg[root * 2 + 1].first += seg[root].first;
-    seg[root * 2 + 1].second += seg[root].second;
-    seg[root] = {0, 0};
+    lazyUpdate(root, s, e);
 
     int m = (s + e) / 2;
     auto l = find(target, root * 2, s, m);
@@ -204,17 +211,59 @@ int main() {
     for (int i = 0; i < M; i++) {
         cin >> a >> b;
         if (a == 1) {
-            int bb = b;
-            auto [p, q] = getBucketIdx(buckets, b);
-            int t = getTop(buckets, b, p, q);
-            while (top[bb] != top[t]) {
-                updateSeg(!isWhite[b], in[top[bb]], in[bb], 1, 1, N);
-                bb = parent[top[bb]];
-            }
-            updateSeg(!isWhite[b], in[t], in[bb], 1, 1, N);
+            pi here = updateSeg(isWhite[b] ? pair{1, -1} : pair{-1, 1}, in[b],
+                                in[b], 1, 1, N);
+            isWhite[b] ? here.second++ : here.first++;
+            auto [pp, qq] = getBucketIdx(buckets, b);
             isWhite[b] = !isWhite[b];
-            buckets[p][q].first += isWhite[b] ? -1 : 1;
-            buckets[p][q].second += isWhite[b] ? 1 : -1;
+            int bb = parent[b];
+            if (bb != 0) {
+                if (isWhite[bb] == isWhite[b]) {
+                    updateSeg(isWhite[bb] ? pair{-1 * here.first, 0}
+                                          : pair{0, -1 * here.second},
+                              in[bb], in[bb], 1, 1, N);
+                } else {
+                    updateSeg(isWhite[bb] ? pair{here.first, 0}
+                                          : pair{0, here.second},
+                              in[bb], in[bb], 1, 1, N);
+                }
+                auto [p, q] = getBucketIdx(buckets, bb);
+                int t = getTop(buckets, bb, p, q); // 부모 색깔의 top
+                while (top[bb] != top[t]) {
+                    if (isWhite[parent[b]] == isWhite[b]) {
+                        updateSeg(isWhite[parent[b]] ? pair{0, here.second}
+                                                     : pair{here.first, 0},
+                                  in[top[bb]], in[bb], 1, 1, N);
+                    } else {
+                        updateSeg(isWhite[parent[b]] ? pair{0, -1 * here.second}
+                                                     : pair{-1 * here.first, 0},
+                                  in[top[bb]], in[bb], 1, 1, N);
+                    }
+                    bb = parent[top[bb]];
+                }
+                if (isWhite[parent[b]] == isWhite[b]) {
+                    updateSeg(isWhite[parent[b]] ? pair{0, here.second}
+                                                 : pair{here.first, 0},
+                              in[t], in[bb], 1, 1, N);
+                } else {
+                    updateSeg(isWhite[parent[b]] ? pair{0, -1 * here.second}
+                                                 : pair{-1 * here.first, 0},
+                              in[t], in[bb], 1, 1, N);
+                }
+                if (parent[t] != 0) {
+                    if (isWhite[parent[b]] == isWhite[b]) {
+                        updateSeg(isWhite[parent[b]] ? pair{0, here.second}
+                                                     : pair{here.first, 0},
+                                  in[parent[t]], in[parent[t]], 1, 1, N);
+                    } else {
+                        updateSeg(isWhite[parent[b]] ? pair{0, -1 * here.second}
+                                                     : pair{-1 * here.first, 0},
+                                  in[parent[t]], in[parent[t]], 1, 1, N);
+                    }
+                }
+            }
+            buckets[pp][qq].first += isWhite[b] ? -1 : 1;
+            buckets[pp][qq].second += isWhite[b] ? 1 : -1;
         } else {
             auto [p, q] = getBucketIdx(buckets, b);
             int t = getTop(buckets, b, p, q);

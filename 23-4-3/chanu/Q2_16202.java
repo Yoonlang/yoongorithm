@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 /*
@@ -15,7 +14,7 @@ import java.util.StringTokenizer;
 
 0 0
  */
-public class Q2_10202 {
+public class Q2_16202 {
     static Edge[] edges;
     static boolean[] deleted;
     static int[] result;

@@ -25,7 +25,7 @@ bool isHeadOK() {
     return true;
 }
 
-void printBoard(int time) {
+void printBoard() {
     cout << time << " " << head.Y << " " << head.X << " "
          << "\n";
     for (int i = 1; i <= board_size; i++) {

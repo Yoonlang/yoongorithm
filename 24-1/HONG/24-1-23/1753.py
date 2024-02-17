@@ -5,6 +5,7 @@ S = int(input())
 
 def dijkstra(start):
 
+  # 0. 초기화
   distances = [int(1e9) for _ in range(V+1)]
   distances[start] = 0
 
@@ -12,11 +13,13 @@ def dijkstra(start):
   
   while pq:
 
+    # 1. 가까운노드
     current_dist, current_node = heapq.heappop(pq)
 
     if current_dist > distances[current_node]:
       continue
-
+    
+    # 2. 비용갱신
     for neighbor, weight in graph[current_node]:
       distance = weight + distances[current_node]
       if distance < distances[neighbor]:

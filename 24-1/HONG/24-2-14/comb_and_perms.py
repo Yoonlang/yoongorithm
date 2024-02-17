@@ -40,3 +40,15 @@ def permutates(n,c):
   permute([], 1)
 
 permutates(3, 3)
+
+# 중복순열
+def permutations_duplicated(n, p):
+  def permutate(arr):
+    if len(arr) == p:
+      print(arr)
+      return
+    for i in range(1, n+1):
+      arr.append(i)
+      permutate(arr)
+      arr.pop()
+  permutate([], 1)

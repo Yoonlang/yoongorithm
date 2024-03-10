@@ -7,6 +7,8 @@
 3. 그래도 점화식 도출 전까진 갔음. 굿!
 
 **문제풀이순서**
+DP 개념 : https://hongjw1938.tistory.com/47
+합분해 해설 : https://hongjw1938.tistory.com/63
 1. 변수 갯수 추정하기
 2. 점화식 세우기
 3. Top-down / Bottom-up 정하기
